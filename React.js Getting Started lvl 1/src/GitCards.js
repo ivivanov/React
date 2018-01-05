@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 const CardList = function (props) {
     return (
         <div>
-            {props.cards.map(x => <Card {...x} />)}
+            {props.cards.map(x => <Card key={x.id} {...x} />)}
         </div>
     );
 };
@@ -11,7 +12,7 @@ const CardList = function (props) {
 const Card = function (props) {
     return (
         <div style={{ margin: 10, display: 'flex' }}>
-            <img src={props.avatar} width='100' height='100' alt="profile pic" />
+            <img src={props.avatar_url} width='100' height='100' alt="profile pic" />
             <div style={{ display: 'inline-block', marginLeft: 10 }} >
                 <div style={{ fontWeight: 'bold' }}>{props.name}</div>
                 <div>{props.company}</div>
@@ -21,9 +22,10 @@ const Card = function (props) {
 };
 
 class Form extends Component {
+
     constructor(props) {
         super(props);
-
+        this._githubProfileApiURL = "https://api.github.com/users/";
         this.state = {
             userName: ""
         };
@@ -34,7 +36,11 @@ class Form extends Component {
 
     onSubmitHandler = function (event) {
         event.preventDefault();
-        console.log(this.state.userName);
+        axios.get(this._githubProfileApiURL + this.state.userName)
+            .then(result => {
+                this.props.onSubmit(result.data);
+                this.setState({ userName: "" });
+            });
     }
 
     onChangeHandler = function (event) {
@@ -45,7 +51,7 @@ class Form extends Component {
     render() {
         return (
             <form onSubmit={this.onSubmitHandler}>
-                <input onChange={this.onChangeHandler} type="text" required />
+                <input onChange={this.onChangeHandler} type="text" value={this.state.userName} required />
                 <input type="submit" />
             </form>
         );
@@ -57,27 +63,20 @@ class GitCards extends Component {
         super(props);
 
         this.state = {
-            cards: [
-                {
-                    key: 1,
-                    avatar: 'http://via.placeholder.com/100',
-                    name: "Tyrell Wellick",
-                    company: "Evil Corp"
-                },
-                {
-                    key: 2,
-                    avatar: 'http://via.placeholder.com/100',
-                    name: "Elliot Alderson",
-                    company: "FSociety "
-                }
-            ]
+            cards: []
         }
+
+        this.addNewCard = this.addNewCard.bind(this);
     }
+
+    addNewCard = function (card) {
+        this.setState({ cards: this.state.cards.concat(card) });
+    };
 
     render() {
         return (
             <div>
-                <Form />
+                <Form onSubmit={this.addNewCard} />
                 <CardList cards={this.state.cards} />
             </div>
         );
