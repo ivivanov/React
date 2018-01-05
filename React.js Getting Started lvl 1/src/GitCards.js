@@ -46,6 +46,11 @@ class Form extends Component {
     onChangeHandler = function (event) {
         event.preventDefault();
         this.setState({ userName: event.target.value });
+        // this.setState(function (prevState) {
+        //     return {
+        //         userName: event.target.value
+        //     };
+        // })
     }
 
     render() {
@@ -70,7 +75,11 @@ class GitCards extends Component {
     }
 
     addNewCard = function (card) {
-        this.setState({ cards: this.state.cards.concat(card) });
+        this.setState(function (prevState) {
+            return {
+                cards: prevState.cards.concat(card)
+            }
+        });
     };
 
     render() {
