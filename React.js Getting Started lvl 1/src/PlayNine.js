@@ -73,15 +73,18 @@ class PlayNine extends Component {
         }, this.updateDoneStatus)
     }
 
-    updateDoneStatus = function () {
+    updateDoneStatus = function (msg) {
         this.setState(function (prevState) {
-
             if (prevState.usedNumbers.length === 9) {
                 return { doneStatus: 'Congratulations!' };
             }
 
             if (prevState.reroll === 0 && !this.posibleSolutions(prevState)) {
                 return { doneStatus: 'Game Over!' };
+            }
+
+            if (msg) {
+                return { doneStatus: msg };
             }
         })
     }
@@ -113,9 +116,17 @@ class PlayNine extends Component {
     render() {
         return (
             <div className='container'>
-                <h1 className='big-font'>Play Nine Stars</h1>
+                <div className='row'>
+                    <div className='col-6'>
+                        <h1 className='big-font'>Play Nine Stars</h1>
+                    </div>
+                    <div className='col-6'>
+                        <Timer updateDoneStatus={this.updateDoneStatus} />
+                    </div>
+                </div>
                 <hr />
                 <div className='jumbotron'>
+
                     <div className='row'>
                         <Stars randStarsCount={this.state.randStarsCount} />
                         <EqualsBtn
@@ -136,6 +147,36 @@ class PlayNine extends Component {
                         <Numbers selectedNumbers={this.state.selectedNumbers} selectNumber={this.selectNumberHandler} usedNumbers={this.state.usedNumbers} />
                     }
                 </div>
+            </div>
+        );
+    }
+}
+
+class Timer extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            seconds: 60
+        }
+
+        setInterval(() =>
+            this.setState(function (prevState) {
+                if (prevState.seconds === 0) {
+                    props.updateDoneStatus('No time! Game Over!')
+                }
+
+                return {
+                    seconds: prevState.seconds === 0 ? 0 : prevState.seconds - 1
+                };
+            }
+            ), 1000);
+    }
+
+    render() {
+        return (
+            <div className='big-font pull-right'>
+                {this.state.seconds} seconds left
             </div>
         );
     }
