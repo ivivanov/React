@@ -1,60 +1,26 @@
 import React, { Component } from 'react';
-//import logo from './logo.svg';
-//import './App.css';
+import GitCards from './GitCards/GitCards';
+import PlayNine from './PlayNine/PlayNine';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+    render() {
+        return (
+            <div >
+                <h1>1. GitCards app Component</h1>
+                <hr />
+                <div className='jumbotron'>
+                    <GitCards />
+                </div>
+                <h1>2. PlayNine app Component</h1>
+                <hr />
+                <div>
+                    <PlayNine />
+                </div>
 
-    this.state = { counter: 0 };
-    this.incrementCounter = this.incrementCounter.bind(this);
-  }
-
-  incrementCounter = function (incrementorVal) {
-    this.setState(function (prevState) {
-      return {
-        counter: prevState.counter + incrementorVal
-      };
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        <IncrementBtn incrementorVal={1} onClickFunction={this.incrementCounter} />
-        <IncrementBtn incrementorVal={3} onClickFunction={this.incrementCounter} />
-        <IncrementBtn incrementorVal={5} onClickFunction={this.incrementCounter} />
-        <ResultTb counter={this.state.counter}/>
-      </div>
-    );
-  }
-}
-
-class IncrementBtn extends Component {
-  constructor(props){
-    super(props);
-
-    this.onClickHandler = this.onClickHandler.bind(this);
-  }
-
-
-  onClickHandler = function(){
-    this.props.onClickFunction(this.props.incrementorVal);
-  }
-
-  render() {
-    return (
-      <button onClick={this.onClickHandler}>
-        +{this.props.incrementorVal}
-      </button>
-    );
-  }
-}
-
-const ResultTb = function (props) {
-  return (
-    <span>{props.counter}</span>
-  );
+            </div>
+        )
+    }
 }
 
 export default App;
+

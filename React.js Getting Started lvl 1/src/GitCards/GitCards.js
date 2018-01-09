@@ -55,9 +55,13 @@ class Form extends Component {
 
     render() {
         return (
-            <form onSubmit={this.onSubmitHandler}>
-                <input onChange={this.onChangeHandler} type="text" value={this.state.userName} required />
-                <input type="submit" />
+            <form className='input-group' onSubmit={this.onSubmitHandler}>
+                <input className='form-control' 
+                       onChange={this.onChangeHandler} 
+                       type="text" value={this.state.userName} 
+                       placeholder='Github username'
+                       required />
+                <input className='btn' type="submit" />
             </form>
         );
     }

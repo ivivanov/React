@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './PlayNine.css';
 
 class PlayNine extends Component {
     static getRandNumber = () => 1 + Math.floor(Math.random() * 9);
