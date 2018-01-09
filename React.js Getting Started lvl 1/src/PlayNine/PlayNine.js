@@ -160,11 +160,13 @@ class Timer extends Component {
         this.state = {
             seconds: 60
         }
+    }
 
+    componentDidMount() {
         setInterval(() =>
             this.setState(function (prevState) {
                 if (prevState.seconds === 0) {
-                    props.updateDoneStatus('No time! Game Over!')
+                    this.props.updateDoneStatus('No time! Game Over!')
                 }
 
                 return {
